@@ -11,11 +11,12 @@ namespace Dados
         {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=acervo;Trusted_Connection=True;");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        //    modelBuilder.Entity<Instituicao>()
-        //.HasMany(c => c.Obras)
-        //.WithOne(e => e.Company);
+            //    modelBuilder.Entity<Instituicao>()
+            //.HasMany(c => c.Obras)
+            //.WithOne(e => e.Company);
         }
 
     }

@@ -36,22 +36,5 @@ namespace Dominio.Models
         [Required]
         public string Issn { get; set; }
 
-
-
-        /**
-         *{
-"id":"2",
-"autor":"Antonio de Souza",
-"titulo":"Titulo do livro",
-"ano":"2017",
-"edicao":"5",
-"local":"Florianópolis",
-"editora":"Editora",
-"paginas":"228",
-"isbn":"1044-102-500-2",
-"issn":"10245-51-2200"
-
-         *
-         */
     }
 }

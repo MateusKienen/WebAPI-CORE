@@ -9,9 +9,8 @@ namespace Dados
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Tarefas;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=acervo;Trusted_Connection=True;");
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         //    modelBuilder.Entity<Instituicao>()

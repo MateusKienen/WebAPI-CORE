@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Dominio.Models
 {
-    [Table("Obras")]
-    class Obras : EntidadeBase
+    [Table("Obra")]
+    public class Obra : EntidadeBase
     {
         [Required]
         public string Autor { get; set; }
@@ -36,5 +36,6 @@ namespace Dominio.Models
         [Required]
         public string Issn { get; set; }
 
+        public ICollection<Instituicao> ObraInstituicoes { get; set; }
     }
 }

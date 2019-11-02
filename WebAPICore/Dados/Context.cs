@@ -14,9 +14,16 @@ namespace Dados
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //    modelBuilder.Entity<Instituicao>()
-            //.HasMany(c => c.Obras)
-            //.WithOne(e => e.Company);
+            modelBuilder.Entity<ObraInstituicao>()
+              .HasKey(oi => new { oi.ObraId, oi.InstituicaoId});
+            modelBuilder.Entity<ObraInstituicao>()
+                .HasOne(oi => oi.Obra)
+                .WithMany(b => b.ObraInstituicao)
+                .HasForeignKey(oi => oi.ObraId);
+            modelBuilder.Entity<ObraInstituicao>()
+                .HasOne(bc => bc.Instituicao)
+                .WithMany(c => c.ObraInstituicao)
+                .HasForeignKey(bc => bc.InstituicaoId);
         }
 
     }

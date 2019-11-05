@@ -14,9 +14,9 @@ namespace Dominio.Models
 
         [Required]
         public string Titulo { get; set; }
-
+        
         [Required]
-        public DateTime Ano { get; set; }
+        public string Ano { get; set; }
 
         [Required]
         public string Edicao { get; set; }
@@ -28,7 +28,7 @@ namespace Dominio.Models
         public string Editora { get; set; }
 
         [Required]
-        public int Paginas { get; set; }
+        public string Paginas { get; set; }
 
         [Required]
         public string Isbn { get; set; }
@@ -36,6 +36,5 @@ namespace Dominio.Models
         [Required]
         public string Issn { get; set; }
 
-        public ICollection<Instituicao> ObraInstituicoes { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace Dominio.Models
         [Required]
         public Entidade Entidade { get; set; }
 
-        public ICollection<ObraInstituicao> ObraInstituicao { get; set; }
+        public IEnumerable<Obra> InstObras { get; set; }
     }
 
 

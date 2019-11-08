@@ -4,13 +4,13 @@
 
 //namespace Dominio.Models
 //{
-//public class ObraInstituicao
-//{
-//    public int ObraId { get; set; }
-//    public Obra Obra { get; set; }
+//    public class ObraInstituicao
+//    {
+//        public int ObraId { get; set; }
+//        public Obra Obra { get; set; }
 
-//    public int InstituicaoId { get; set; }
-//    public Instituicao Instituicao { get; set; }
+//        public int InstituicaoId { get; set; }
+//        public Instituicao Instituicao { get; set; }
 
-//}
+//    }
 //}

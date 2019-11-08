@@ -19,16 +19,16 @@ namespace WebAPICore.Controllers
 
         // GET: api/Obras
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Obra>>> GetObras()
+        public IEnumerable<Obra> GetObras()
         {
-            return await db.Obras.ToListAsync();
+            return db.Obras;
         }
 
         // GET: api/Obras/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Obra>> GetObra(int id)
+        public ActionResult<Obra> GetObra(int id)
         {
-            var obra = await db.Obras.FindAsync(id);
+            Obra obra = db.Obras.Find(id);
 
             if (obra == null)
             {
@@ -38,11 +38,12 @@ namespace WebAPICore.Controllers
             return obra;
         }
 
+
         // PUT: api/Obras/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutObra(int id, Obra obra)
+        public ActionResult<Obra> PutObra(int id, [FromBody] Obra obra)
         {
             if (id != obra.Id)
             {
@@ -53,7 +54,7 @@ namespace WebAPICore.Controllers
 
             try
             {
-                await db.SaveChangesAsync();
+                db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -67,7 +68,7 @@ namespace WebAPICore.Controllers
                 }
             }
 
-            return NoContent();
+            return obra;
         }
 
         // POST: api/Obras
@@ -76,31 +77,14 @@ namespace WebAPICore.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Obra obra)
         {
-            //db.Obras.Add(obra);
-            //db.SaveChangesAsync();
-            Obra ob = new Obra();
-            ob.Ano = obra.Ano;
-            ob.Autor = obra.Autor;
-            ob.Edicao = obra.Edicao;
-            ob.Editora = obra.Editora;
-            ob.Isbn = obra.Isbn;
-            ob.Issn = obra.Issn;
-            ob.Paginas = obra.Paginas;
-            ob.Titulo = obra.Titulo;
-            db.Obras.Add(ob);
+            db.Obras.Add(obra);
+            db.SaveChanges();
 
-            return CreatedAtAction(nameof(GetObra), new { id = obra.Id }, obra);
+            return Ok(obra);
+
         }
 
 
-
-        //public async Task<ActionResult<Obra>> PostObra(Obra obra)
-        //{
-        //    _context.Obras.Add(obra);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction(nameof(GetObra), new { id = obra.Id }, obra);
-        //}
 
         // DELETE: api/Obras/5
         [HttpDelete("{id}")]

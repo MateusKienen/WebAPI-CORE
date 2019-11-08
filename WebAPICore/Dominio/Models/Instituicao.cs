@@ -13,8 +13,9 @@ namespace Dominio.Models
         public string Nome { get; set; }
         [Required]
         public Entidade Entidade { get; set; }
+        [Required]
+        public IEnumerable<Obra> Obras { get; set; }
 
-        public IEnumerable<Obra> InstObras { get; set; }
     }
 
 

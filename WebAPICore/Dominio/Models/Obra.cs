@@ -14,7 +14,7 @@ namespace Dominio.Models
 
         [Required]
         public string Titulo { get; set; }
-        
+
         [Required]
         public string Ano { get; set; }
 

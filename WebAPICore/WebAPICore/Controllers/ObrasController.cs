@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Dados;
 using Dominio.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPICore.Controllers
 {
+
+
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ObrasController : ControllerBase
     {
 
         Context db = new Context();
 
+        [AllowAnonymous]
         // GET: api/Obras
         [HttpGet]
         public IEnumerable<Obra> GetObras()
@@ -25,6 +28,7 @@ namespace WebAPICore.Controllers
         }
 
         // GET: api/Obras/5
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Obra> GetObra(int id)
         {
@@ -70,6 +74,30 @@ namespace WebAPICore.Controllers
 
             return obra;
         }
+        /* ========================================================== */
+
+        
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchObra(int id, [FromBody] Obra patchObra)
+        {
+            var obraDB = db.Obras.SingleOrDefault(x => x.Id == id);
+
+            if (obraDB == null) return NotFound();
+
+            
+
+            await db.SaveChangesAsync();
+
+            return Ok(obraDB);
+
+
+        }
+
+
+
+        /* ========================================================== */
+
 
         // POST: api/Obras
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

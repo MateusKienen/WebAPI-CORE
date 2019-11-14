@@ -4,7 +4,7 @@ using System;
 
 namespace Dados
 {
-    public class Context : DbContext
+    public class Context : DbContext  
     {
         public DbSet<Obra> Obras { get; set; }
         public DbSet<Instituicao> Instituicao { get; set; }

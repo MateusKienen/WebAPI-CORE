@@ -7,59 +7,46 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Dados;
 using Dominio.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPICore.Controllers
 {
     // [Route("RestAPIPesquisa/[controller]")]
     [Route("RestAPIPesquisa/[controller]/[action]")]
+    [Authorize]
     [ApiController]
     public class InstituicaoController : ControllerBase
     {
         Context db = new Context();
 
+        // GET: api/Instituicao/get
         [ActionName("get")]
-        // GET: api/Instituicao
         [HttpGet]
         public IEnumerable<Instituicao> GetInstituicao()
         {
             return db.Instituicao;
         }
 
-        // GET: api/Instituicao/5
+        // GET: api/Instituicao/get/5
         [ActionName("get")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Instituicao>> GetInstituicao(int id)
         {
             var instituicao = await db.Instituicao.FindAsync(id);
+            var oo = db.Obras.Where(o => o.InstituicaoId == id).Select(o => o.Id).ToList();
+            Obra obra;
+            foreach (var item in oo)
+            {
+                obra = db.Obras.Find(item);
+                instituicao.Obras.Append(obra);
+            }
 
             if (instituicao == null) return NotFound();
 
             return instituicao;
         }
 
-
-        [ActionName("obras")]
-        [HttpGet("{id}")]
-        public ActionResult<Instituicao> GetObrasInstituicao(int id)
-        {
-            var inst = db.Instituicao.Find(id);
-            db.Database.OpenConnection();
-            db.
-                //("Select o.id, o.autor, o.Titulo, o.Ano, o.Edicao, o.Local, " +
-                //$"o.Editora, o.Paginas, o.Isbn, o.Issn from Obra o where o.InstituicaoId = {id}");
-
-            //FromSqlRaw("Select o.id, o.autor, o.Titulo, o.Ano, o.Edicao, o.Local, " +
-            // $"o.Editora, o.Paginas, o.Isbn, o.Issn from Obra o where o.InstituicaoId = {id}").ToList();
-            //foreach (var item in sel)
-            //{
-            //    inst.Obras.Append(item);
-            //}
-            //return inst;
-        }
-
-
-
-        // PUT: api/Instituicao/5
+        // PUT: api/Instituicao/put/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [ActionName("put")]
@@ -77,21 +64,21 @@ namespace WebAPICore.Controllers
             return Ok(ins);
         }
 
-        // POST: api/Instituicao
+        // POST: api/Instituicao/post
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [ActionName("post")]
         [HttpPost]
         public async Task<ActionResult<Instituicao>> PostInstituicao(int id, [FromBody] Instituicao inst)
         {
+            if (!(inst.Entidade.Equals(1) || inst.Entidade.Equals(2))) return BadRequest("Obra não inserida - Valor para Entidade não cadastrado");
             db.Instituicao.Add(inst);
             await db.SaveChangesAsync();
 
             return Ok(inst);
-
         }
 
-        // DELETE: api/Instituicao/5
+        // DELETE: api/Instituicao/del/5
         [ActionName("del")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Instituicao>> DeleteInstituicao(int id)
@@ -105,7 +92,7 @@ namespace WebAPICore.Controllers
             db.Instituicao.Remove(instituicao);
             await db.SaveChangesAsync();
 
-            return instituicao;
+            return Ok("Instituição Removida");
         }
     }
 }

@@ -71,8 +71,14 @@ namespace WebAPICore.Controllers
         public IActionResult Post([FromBody]Obra obra)
         {
             db.Obras.Add(obra);
-            db.SaveChanges();
-
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception a)
+            {
+                return BadRequest($"Obra não inserida: {a.Message}");
+            }
             return Ok(obra);
 
         }

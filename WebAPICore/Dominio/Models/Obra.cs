@@ -27,6 +27,6 @@ namespace Dominio.Models
 
         public string Issn { get; set; }
 
-       //public Instituicao instituicao { get; set; }
+       public int InstituicaoId { get; set; }
     }
 }

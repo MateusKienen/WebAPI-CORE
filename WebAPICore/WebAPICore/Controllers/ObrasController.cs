@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Dados;
 using Dominio.Models;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace WebAPICore.Controllers
 {
 
 
-    [Route("api/[controller]")]
+    [Route("RestAPIPesquisa/[controller]")]
     [Authorize]
     [ApiController]
     public class ObrasController : ControllerBase
@@ -19,87 +20,51 @@ namespace WebAPICore.Controllers
 
         Context db = new Context();
 
-        [AllowAnonymous]
-        // GET: api/Obras
+        // GET: RestAPIPesquisa//Obras
         [HttpGet]
         public IEnumerable<Obra> GetObras()
         {
             return db.Obras;
         }
 
-        // GET: api/Obras/5
+        // GET: RestAPIPesquisa//Obras/5
         [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Obra> GetObra(int id)
         {
             Obra obra = db.Obras.Find(id);
 
-            if (obra == null)
-            {
-                return NotFound();
-            }
+            if (obra == null) return BadRequest();
 
             return obra;
         }
 
-
-        // PUT: api/Obras/5
+        // PUT: RestAPIPesquisa//Obras/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public ActionResult<Obra> PutObra(int id, [FromBody] Obra obra)
-        {
-            if (id != obra.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(obra).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ObraExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return obra;
-        }
-        /* ========================================================== */
-
-        
-
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchObra(int id, [FromBody] Obra patchObra)
+        public async Task<IActionResult> PutObra(int id, [FromBody] Obra patchObra)
         {
             var obraDB = db.Obras.SingleOrDefault(x => x.Id == id);
 
-            if (obraDB == null) return NotFound();
+            if (obraDB == null) return BadRequest();
 
-            
+            if (patchObra.Autor != null) obraDB.Autor = patchObra.Autor;
+            if (patchObra.Ano != null) obraDB.Ano = patchObra.Ano;
+            if (patchObra.Editora != null) obraDB.Editora = patchObra.Editora;
+            if (patchObra.Edicao != null) obraDB.Edicao = patchObra.Edicao;
+            if (patchObra.Isbn != null) obraDB.Isbn = patchObra.Isbn;
+            if (patchObra.Issn != null) obraDB.Issn = patchObra.Issn;
+            if (patchObra.Local != null) obraDB.Local = patchObra.Local;
+            if (patchObra.Paginas != null) obraDB.Paginas = patchObra.Paginas;
+            if (patchObra.Titulo != null) obraDB.Titulo = patchObra.Titulo;
 
             await db.SaveChangesAsync();
 
             return Ok(obraDB);
-
-
         }
 
-
-
-        /* ========================================================== */
-
-
-        // POST: api/Obras
+        // POST: RestAPIPesquisa/Obras
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
@@ -112,17 +77,12 @@ namespace WebAPICore.Controllers
 
         }
 
-
-
-        // DELETE: api/Obras/5
+        // DELETE: RestAPIPesquisa//Obras/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Obra>> DeleteObra(int id)
         {
             var obra = await db.Obras.FindAsync(id);
-            if (obra == null)
-            {
-                return NotFound();
-            }
+            if (obra == null) return NotFound();
 
             db.Obras.Remove(obra);
             await db.SaveChangesAsync();
@@ -130,9 +90,16 @@ namespace WebAPICore.Controllers
             return obra;
         }
 
-        private bool ObraExists(int id)
+        // DELETE: 
+        [HttpDelete]
+        public async Task<ActionResult<Obra>> DeleteObra([FromBody] Obra obraJson)
         {
-            return db.Obras.Any(e => e.Id == id);
+            var obra = db.Obras.Where(o => o.Titulo == obraJson.Titulo).FirstOrDefault<Obra>();
+            if (obra == null) return NotFound("Obra não encontrada");
+            db.Remove(obra);
+            await db.SaveChangesAsync();
+            return Ok("obra removida");
+
         }
     }
 }

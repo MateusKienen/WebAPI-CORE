@@ -9,11 +9,8 @@ namespace Dominio.Models
     [Table("Instituicao")]
     public class Instituicao : EntidadeBase
     {
-        [Required]
         public string Nome { get; set; }
-        [Required]
         public Entidade Entidade { get; set; }
-        [Required]
         public IEnumerable<Obra> Obras { get; set; }
 
     }

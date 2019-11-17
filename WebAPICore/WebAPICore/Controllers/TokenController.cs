@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPICore.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("RestAPIPesquisa/[controller]")]
     public class TokenController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -47,7 +47,7 @@ namespace WebAPICore.Controllers
                                     claims: _claims,
                                     expires: DateTime.Now.AddHours(8),
                                     signingCredentials: creds
-                                ) ;
+                                );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

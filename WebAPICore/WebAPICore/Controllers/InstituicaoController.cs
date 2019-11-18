@@ -12,23 +12,21 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebAPICore.Controllers
 {
     // [Route("RestAPIPesquisa/[controller]")]
-    [Route("RestAPIPesquisa/[controller]/[action]")]
+    [Route("RestAPIPesquisa/[controller]")]
     [Authorize]
     [ApiController]
     public class InstituicaoController : ControllerBase
     {
         Context db = new Context();
 
-        // GET: api/Instituicao/get
-        [ActionName("get")]
+        // GET: api/Instituicao
         [HttpGet]
         public IEnumerable<Instituicao> GetInstituicao()
         {
             return db.Instituicao;
         }
 
-        // GET: api/Instituicao/get/5
-        [ActionName("get")]
+        // GET: api/Instituicao/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Instituicao>> GetInstituicao(int id)
         {
@@ -46,10 +44,9 @@ namespace WebAPICore.Controllers
             return instituicao;
         }
 
-        // PUT: api/Instituicao/put/5
+        // PUT: api/Instituicao/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [ActionName("put")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutInstituicao(int id, [FromBody] Instituicao instituicao)
         {
@@ -64,10 +61,9 @@ namespace WebAPICore.Controllers
             return Ok(ins);
         }
 
-        // POST: api/Instituicao/post
+        // POST: api/Instituicao
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [ActionName("post")]
         [HttpPost]
         public async Task<ActionResult<Instituicao>> PostInstituicao(int id, [FromBody] Instituicao inst)
         {
@@ -78,8 +74,7 @@ namespace WebAPICore.Controllers
             return Ok(inst);
         }
 
-        // DELETE: api/Instituicao/del/5
-        [ActionName("del")]
+        // DELETE: api/Instituicao/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Instituicao>> DeleteInstituicao(int id)
         {

@@ -77,7 +77,7 @@ namespace WebAPICore.Controllers
             }
             catch (Exception a)
             {
-                return BadRequest($"Obra não inserida: {a.Message}");
+                return BadRequest($"Error - Obra não inserida: {a.Message}");
             }
             return Ok(obra);
 
@@ -100,11 +100,18 @@ namespace WebAPICore.Controllers
         [HttpDelete]
         public async Task<ActionResult<Obra>> DeleteObra([FromBody] Obra obraJson)
         {
-            var obra = db.Obras.Where(o => o.Titulo == obraJson.Titulo).FirstOrDefault<Obra>();
-            if (obra == null) return NotFound("Obra não encontrada");
-            db.Remove(obra);
+            var obra = db.Obras.Where(o => o.Titulo == obraJson.Titulo).Select(o => o.Id).ToList();
+            if (obra == null) return NotFound("Obra(s) não encontrada(s)");
+
+            foreach (var item in obra)
+            {
+                db.Remove(db.Obras.Find(item));
+            }
             await db.SaveChangesAsync();
-            return Ok("obra removida");
+            return Ok("Obra(s) removida(s)");
+
+            
+
 
         }
     }

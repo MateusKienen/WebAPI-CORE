@@ -65,9 +65,9 @@ namespace WebAPICore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Instituicao>> PostInstituicao(int id, [FromBody] Instituicao inst)
+        public async Task<ActionResult<Instituicao>> PostInstituicao([FromBody] Instituicao inst)
         {
-            if (!(inst.Entidade.Equals(1) || inst.Entidade.Equals(2))) return BadRequest("Obra não inserida - Valor para Entidade não cadastrado");
+            if (!(inst.Entidade.ToString().Equals("governamental") || inst.Entidade.ToString().Equals("naoGovernamental"))) return BadRequest("Obra não inserida - Valor para Entidade não cadastrado");
             db.Instituicao.Add(inst);
             await db.SaveChangesAsync();
 
@@ -89,5 +89,7 @@ namespace WebAPICore.Controllers
 
             return Ok("Instituição Removida");
         }
+
+        
     }
 }

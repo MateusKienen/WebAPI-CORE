@@ -28,7 +28,6 @@ namespace WebAPICore.Controllers
         }
 
         // GET: RestAPIPesquisa//Obras/5
-        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Obra> GetObra(int id)
         {
@@ -45,6 +44,7 @@ namespace WebAPICore.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutObra(int id, [FromBody] Obra patchObra)
         {
+
             var obraDB = db.Obras.SingleOrDefault(x => x.Id == id);
 
             if (obraDB == null) return BadRequest();
@@ -109,10 +109,6 @@ namespace WebAPICore.Controllers
             }
             await db.SaveChangesAsync();
             return Ok("Obra(s) removida(s)");
-
-            
-
-
         }
     }
 }
